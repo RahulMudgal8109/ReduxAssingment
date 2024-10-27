@@ -49,6 +49,7 @@ export const deleteContact = (deleteKey) => {
 }
 export const addToFavList = (key) => {
     return (dispatch) => {
+        console.log("Add TO FAV called")
         fetch(`https://conatctlist-65500-default-rtdb.asia-southeast1.firebasedatabase.app/contact-list/${key}.json`)
             .then(res => res.json())
             .then(data => {
@@ -75,23 +76,19 @@ export const addToFavList = (key) => {
     }
 
 }
-export const removeFromFav =(key,contactKeys)=>{
-    return (dispatch)=>{
-        console.log(contactKeys)
-        const keyToRemove=key;
-        const indexToRemove=contactKeys.findIndex(contact=>contact.key===keyToRemove);
-        console.log(indexToRemove)
-
-        if(indexToRemove!==-1)
-        {
-            const favKeyToRemove=contactKeys[indexToRemove].favKey;
-            console.log(favKeyToRemove)
-            fetch(`https://conatctlist-65500-default-rtdb.asia-southeast1.firebasedatabase.app/fav-contact-list/${favKeyToRemove}.json`,{
-                method:"DELETE"
-            }).then(res=>res.json())
-            .then(data=>console.log(data))
-            .catch(error=>console.log(error))
+export const removeFromFav = (key, contactKeys) => {
+    return (dispatch) => {
+        const indexToRemove = contactKeys.findIndex(contact => contact.key === key);
+        
+        if (indexToRemove !== -1) {
+            const favKeyToRemove = contactKeys[indexToRemove].favKey;
+            fetch(`https://conatctlist-65500-default-rtdb.asia-southeast1.firebasedatabase.app/fav-contact-list/${favKeyToRemove}.json`, {
+                method: "DELETE"
+            })
+            .then(() => {
+                dispatch(favContactSliceActions.removeContactKey(key)); // Remove from Redux state
+            })
+            .catch(error => console.log(error));
         }
-    }
-
-}
+    };
+};

@@ -12,7 +12,7 @@ const NavbarAndContactList = () => {
         <VerticalNavbar />
         <Routes>
           <Route path="/" element={<ContactList />} />
-          <Route path="fav" element={<FavContactList />} />
+          <Route path="/fav" element={<FavContactList />} />
         </Routes>
       </Router>
     </div>
